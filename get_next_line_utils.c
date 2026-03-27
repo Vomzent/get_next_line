@@ -6,22 +6,25 @@
 /*   By: vcoevert <vcoevert@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2026/03/25 11:45:11 by vcoevert     #+#    #+#                  */
-/*   Updated: 2026/03/27 17:50:55 by vcoevert     ########   odam.nl          */
+/*   Updated: 2026/03/27 18:38:03 by vcoevert     ########   odam.nl          */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	*list_clear(t_list *head)
+void	*list_clear(t_list **lst)
 {
+	t_list	*head;
 	t_list	*next;
 
+	head = *lst;
 	while (head)
 	{
 		next = head->next;
 		free(head);
 		head = next;
 	}
+	*lst = head;
 	return (head);
 }
 
@@ -52,9 +55,10 @@ void	clean_buffer(char *chunk)
 		chunk[i++] = '\0';
 }
 
-t_list	*create_chunk(t_list *head, char *chunk)
+t_list	*create_chunk(t_list **lst, char *chunk)
 {
 	t_list	*ret;
+	t_list	*head;
 	size_t	i;
 
 	i = -1;
@@ -64,9 +68,10 @@ t_list	*create_chunk(t_list *head, char *chunk)
 	while (++i < BUFFER_SIZE)
 		ret->chunk[i] = chunk[i];
 	ret->next = 0;
+	head = *lst;
 	if (!head)
 	{
-		head = ret;
+		*lst = ret;
 		return (ret);
 	}
 	while (head->next)
@@ -90,16 +95,17 @@ void	lists_to_str(t_list *head, char *buff, char **ret)
 		i++;
 	}
 	size = find_newline(buff) - buff;
-	ret[0] = malloc(sizeof(t_list) * i + size + 1);
+	ret[0] = malloc(sizeof(t_list) * i + size + 2);
 	j = 0;
 	while (temp)
 	{
 		i = 0;
 		while (i < BUFFER_SIZE)
 			ret[0][j++] = temp->chunk[i++];
+		temp = temp->next;
 	}
 	i = 0;
-	while (i < size)
+	while (i < size + 1)
 		ret[0][j++] = buff[i++];
 	ret[0][j] = '\0';
 }
