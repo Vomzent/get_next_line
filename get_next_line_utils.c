@@ -6,7 +6,7 @@
 /*   By: vcoevert <vcoevert@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2026/03/25 11:45:11 by vcoevert     #+#    #+#                  */
-/*   Updated: 2026/03/26 17:23:46 by vcoevert     ########   odam.nl          */
+/*   Updated: 2026/03/27 17:50:55 by vcoevert     ########   odam.nl          */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,19 @@ char	*find_newline(char *chunk)
 	return (0);
 }
 
-// size_t	strlen(char *chunk)
-// {
-// 	size_t
-// }
+void	clean_buffer(char *chunk)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = find_newline(chunk) - chunk;
+	j++;
+	while (j < BUFFER_SIZE)
+		chunk[i++] = chunk[j++];
+	while (i < BUFFER_SIZE)
+		chunk[i++] = '\0';
+}
 
 t_list	*create_chunk(t_list *head, char *chunk)
 {
@@ -66,9 +75,8 @@ t_list	*create_chunk(t_list *head, char *chunk)
 	return (ret);
 }
 
-char	*lists_to_str(t_list *head, char *buff)
+void	lists_to_str(t_list *head, char *buff, char **ret)
 {
-	char	*ret;
 	t_list	*temp;
 	size_t	size;
 	size_t	i;
@@ -82,17 +90,16 @@ char	*lists_to_str(t_list *head, char *buff)
 		i++;
 	}
 	size = find_newline(buff) - buff;
-	ret = malloc(sizeof(t_list) * i + size + 1);
+	ret[0] = malloc(sizeof(t_list) * i + size + 1);
 	j = 0;
 	while (temp)
 	{
 		i = 0;
 		while (i < BUFFER_SIZE)
-			ret[j++] = temp->chunk[i++];
+			ret[0][j++] = temp->chunk[i++];
 	}
 	i = 0;
 	while (i < size)
-		ret[j++] = buff[i++];
-	ret[j] = '\0';
-	return (ret);
+		ret[0][j++] = buff[i++];
+	ret[0][j] = '\0';
 }

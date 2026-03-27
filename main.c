@@ -6,7 +6,7 @@
 /*   By: vcoevert <vcoevert@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2026/03/24 15:16:29 by vcoevert     #+#    #+#                  */
-/*   Updated: 2026/03/26 17:27:56 by vcoevert     ########   odam.nl          */
+/*   Updated: 2026/03/27 12:58:24 by vcoevert     ########   odam.nl          */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,20 @@ int	main(void)
 
 	fd = open("./hello.txt", O_RDWR);
 	ptr = get_next_line(fd);
-	printf("%s", ptr);
+	while (*ptr)
+		write(1, ptr++, 1);
 	ptr = get_next_line(fd);
-	printf("%s", ptr);
+	while (*ptr)
+		write(1, ptr++, 1);
 	ptr = get_next_line(fd);
-	printf("%s", ptr);
+	while (*ptr)
+		write(1, ptr++, 1);
 	ptr = get_next_line(fd);
-	printf("%s", ptr);
+	while (*ptr)
+		write(1, ptr++, 1);
 	ptr = get_next_line(fd);
-	printf("%s", ptr);
-	free(ptr);
+	while (*ptr)
+		write(1, ptr++, 1);
 	close(fd);
 	return (0);
 }

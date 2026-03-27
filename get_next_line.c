@@ -6,7 +6,7 @@
 /*   By: vcoevert <vcoevert@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2026/03/24 13:49:42 by vcoevert     #+#    #+#                  */
-/*   Updated: 2026/03/26 17:26:54 by vcoevert     ########   odam.nl          */
+/*   Updated: 2026/03/27 17:44:27 by vcoevert     ########   odam.nl          */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*get_next_line(int fd)
 
 	lst = 0;
 	ret = buff;
-	while (!ret && ret - buff < BUFFER_SIZE)
+	while (*ret && ret - buff < BUFFER_SIZE)
 		ret++;
 	bytes_read = BUFFER_SIZE;
 	if (ret - buff != BUFFER_SIZE)
@@ -35,7 +35,8 @@ char	*get_next_line(int fd)
 			return (list_clear(lst));
 		bytes_read = read(fd, buff, BUFFER_SIZE);
 	}
-	ret = lists_to_str(lst, buff);
+	lists_to_str(lst, buff, &ret);
 	list_clear(lst);
+	clean_buffer(buff);
 	return (ret);
 }
