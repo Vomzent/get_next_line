@@ -6,7 +6,7 @@
 /*   By: vcoevert <vcoevert@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2026/03/24 15:16:29 by vcoevert     #+#    #+#                  */
-/*   Updated: 2026/03/27 12:58:24 by vcoevert     ########   odam.nl          */
+/*   Updated: 2026/03/29 15:25:45 by vcoevert     ########   odam.nl          */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 int	main(void)
 {
@@ -25,20 +26,29 @@ int	main(void)
 
 	fd = open("./hello.txt", O_RDWR);
 	ptr = get_next_line(fd);
-	while (*ptr)
-		write(1, ptr++, 1);
+	write(1, ptr, strlen(ptr));
+	free(ptr);
 	ptr = get_next_line(fd);
-	while (*ptr)
-		write(1, ptr++, 1);
+	write(1, ptr, strlen(ptr));
+	free(ptr);
 	ptr = get_next_line(fd);
-	while (*ptr)
-		write(1, ptr++, 1);
+	write(1, ptr, strlen(ptr));
+	free(ptr);
 	ptr = get_next_line(fd);
-	while (*ptr)
-		write(1, ptr++, 1);
+	write(1, ptr, strlen(ptr));
+	free(ptr);
 	ptr = get_next_line(fd);
-	while (*ptr)
-		write(1, ptr++, 1);
+	write(1, ptr, strlen(ptr));
+	free(ptr);
+	ptr = get_next_line(fd);
+	write(1, ptr, strlen(ptr));
+	free(ptr);
+	ptr = get_next_line(fd);
+	write(1, ptr, strlen(ptr));
+	free(ptr);
+	ptr = get_next_line(fd);
+	write(1, ptr, strlen(ptr));
+	free(ptr);
 	close(fd);
 	return (0);
 }
