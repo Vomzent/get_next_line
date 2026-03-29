@@ -6,7 +6,7 @@
 /*   By: vcoevert <vcoevert@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2026/03/25 11:45:11 by vcoevert     #+#    #+#                  */
-/*   Updated: 2026/03/29 16:06:20 by vcoevert     ########   odam.nl          */
+/*   Updated: 2026/03/29 16:59:46 by vcoevert     ########   odam.nl          */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	*find_newline(char *chunk)
 	while (++i < BUFFER_SIZE)
 	{
 		if (chunk[i] == '\n' || chunk[i] == '\0')
-			return (chunk + i);
+			return (chunk + i + 1);
 	}
 	return (0);
 }
@@ -47,7 +47,7 @@ void	clean_buffer(char *chunk, ssize_t bytes_read)
 	size_t	j;
 
 	i = 0;
-	j = find_newline(chunk) - chunk + 1;
+	j = find_newline(chunk) - chunk;
 	if (bytes_read != BUFFER_SIZE)
 		j = BUFFER_SIZE;
 	while (j < BUFFER_SIZE)
@@ -66,9 +66,9 @@ t_list	*create_chunk(t_list **lst, char *chunk)
 	ret = malloc(sizeof(t_list));
 	if (!ret)
 		return (ret);
+	ret->next = 0;
 	while (++i < BUFFER_SIZE)
 		ret->chunk[i] = chunk[i];
-	ret->next = 0;	
 	if (!*lst)
 	{
 		*lst = ret;
@@ -84,7 +84,6 @@ t_list	*create_chunk(t_list **lst, char *chunk)
 void	lists_to_str(t_list *head, char *buff, char **ret)
 {
 	t_list	*temp;
-	size_t	size;
 	size_t	i;
 	size_t	j;
 
@@ -95,8 +94,7 @@ void	lists_to_str(t_list *head, char *buff, char **ret)
 		head = head->next;
 		i++;
 	}
-	size = find_newline(buff) - buff;
-	ret[0] = malloc(sizeof(t_list) * i + size + 2);
+	ret[0] = malloc(sizeof(t_list) * i + (find_newline(buff) - buff) + 1);
 	j = 0;
 	while (temp)
 	{
@@ -106,7 +104,7 @@ void	lists_to_str(t_list *head, char *buff, char **ret)
 		temp = temp->next;
 	}
 	i = 0;
-	while (i < size + 1)
+	while (i < (size_t)(find_newline(buff) - buff))
 		ret[0][j++] = buff[i++];
 	ret[0][j] = '\0';
 }
