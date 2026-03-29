@@ -6,7 +6,7 @@
 /*   By: vcoevert <vcoevert@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2026/03/24 13:49:42 by vcoevert     #+#    #+#                  */
-/*   Updated: 2026/03/29 16:07:08 by vcoevert     ########   odam.nl          */
+/*   Updated: 2026/03/29 19:11:07 by vcoevert     ########   odam.nl          */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,6 @@ char	*get_next_line(int fd)
 	}
 	lists_to_str(*lst, buff, &ret);
 	list_clear(lst);
-	clean_buffer(buff, bytes_read);
+	clean_buffer(buff);
 	return (ret);
 }

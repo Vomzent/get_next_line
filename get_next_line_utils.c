@@ -6,7 +6,7 @@
 /*   By: vcoevert <vcoevert@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2026/03/25 11:45:11 by vcoevert     #+#    #+#                  */
-/*   Updated: 2026/03/29 16:59:46 by vcoevert     ########   odam.nl          */
+/*   Updated: 2026/03/29 19:10:42 by vcoevert     ########   odam.nl          */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,14 @@ char	*find_newline(char *chunk)
 	return (0);
 }
 
-void	clean_buffer(char *chunk, ssize_t bytes_read)
+void	clean_buffer(char *chunk)
 {
 	size_t	i;
 	size_t	j;
 
 	i = 0;
 	j = find_newline(chunk) - chunk;
-	if (bytes_read != BUFFER_SIZE)
+	if (!find_newline(chunk))
 		j = BUFFER_SIZE;
 	while (j < BUFFER_SIZE)
 		chunk[i++] = chunk[j++];
@@ -94,7 +94,7 @@ void	lists_to_str(t_list *head, char *buff, char **ret)
 		head = head->next;
 		i++;
 	}
-	ret[0] = malloc(sizeof(t_list) * i + (find_newline(buff) - buff) + 1);
+	ret[0] = malloc(sizeof(t_list) * i + (size_t)(find_newline(buff) - buff) + 1);
 	j = 0;
 	while (temp)
 	{
