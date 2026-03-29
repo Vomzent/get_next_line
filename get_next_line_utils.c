@@ -6,7 +6,7 @@
 /*   By: vcoevert <vcoevert@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2026/03/25 11:45:11 by vcoevert     #+#    #+#                  */
-/*   Updated: 2026/03/29 19:10:42 by vcoevert     ########   odam.nl          */
+/*   Updated: 2026/03/29 21:23:16 by vcoevert     ########   odam.nl          */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,20 +81,20 @@ t_list	*create_chunk(t_list **lst, char *chunk)
 	return (ret);
 }
 
-void	lists_to_str(t_list *head, char *buff, char **ret)
+void	lists_to_str(t_list *head, t_list *temp, char *buff, char **ret)
 {
-	t_list	*temp;
 	size_t	i;
 	size_t	j;
 
 	i = 0;
-	temp = head;
+	if (!head && !buff[0])
+		return ;
 	while (head)
 	{
 		head = head->next;
 		i++;
 	}
-	ret[0] = malloc(sizeof(t_list) * i + (size_t)(find_newline(buff) - buff) + 1);
+	ret[0] = malloc(sizeof(t_list) * i + (find_newline(buff) - buff) + 1);
 	j = 0;
 	while (temp)
 	{
