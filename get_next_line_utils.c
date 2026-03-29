@@ -6,7 +6,7 @@
 /*   By: vcoevert <vcoevert@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2026/03/25 11:45:11 by vcoevert     #+#    #+#                  */
-/*   Updated: 2026/03/29 15:21:04 by vcoevert     ########   odam.nl          */
+/*   Updated: 2026/03/29 16:06:20 by vcoevert     ########   odam.nl          */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,15 @@ char	*find_newline(char *chunk)
 	return (0);
 }
 
-void	clean_buffer(char *chunk)
+void	clean_buffer(char *chunk, ssize_t bytes_read)
 {
 	size_t	i;
 	size_t	j;
 
 	i = 0;
-	j = find_newline(chunk) - chunk;
-	j++;
+	j = find_newline(chunk) - chunk + 1;
+	if (bytes_read != BUFFER_SIZE)
+		j = BUFFER_SIZE;
 	while (j < BUFFER_SIZE)
 		chunk[i++] = chunk[j++];
 	while (i < BUFFER_SIZE)

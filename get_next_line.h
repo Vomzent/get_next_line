@@ -6,7 +6,7 @@
 /*   By: vcoevert <vcoevert@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2026/03/24 14:00:32 by vcoevert     #+#    #+#                  */
-/*   Updated: 2026/03/27 18:13:56 by vcoevert     ########   odam.nl          */
+/*   Updated: 2026/03/29 16:06:33 by vcoevert     ########   odam.nl          */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,5 @@ char	*find_newline(char *chunk);
 void	*list_clear(t_list **lst);
 t_list	*create_chunk(t_list **lst, char *chunk);
 void	lists_to_str(t_list *head, char *buff, char **ret);
-void	clean_buffer(char *buff);
+void	clean_buffer(char *buff, ssize_t bytes_read);
 #endif
