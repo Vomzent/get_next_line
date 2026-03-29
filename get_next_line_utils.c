@@ -6,7 +6,7 @@
 /*   By: vcoevert <vcoevert@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2026/03/25 11:45:11 by vcoevert     #+#    #+#                  */
-/*   Updated: 2026/03/27 18:38:03 by vcoevert     ########   odam.nl          */
+/*   Updated: 2026/03/29 14:06:05 by vcoevert     ########   odam.nl          */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,13 @@ t_list	*create_chunk(t_list **lst, char *chunk)
 		return (ret);
 	while (++i < BUFFER_SIZE)
 		ret->chunk[i] = chunk[i];
-	ret->next = 0;
-	head = *lst;
-	if (!head)
+	ret->next = 0;	
+	if (!lst)
 	{
-		*lst = ret;
+		lst = &ret;
 		return (ret);
 	}
+	head = *lst;
 	while (head->next)
 		head = head->next;
 	head->next = ret;

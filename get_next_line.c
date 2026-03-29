@@ -6,7 +6,7 @@
 /*   By: vcoevert <vcoevert@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2026/03/24 13:49:42 by vcoevert     #+#    #+#                  */
-/*   Updated: 2026/03/27 18:29:08 by vcoevert     ########   odam.nl          */
+/*   Updated: 2026/03/29 14:05:06 by vcoevert     ########   odam.nl          */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ char	*get_next_line(int fd)
 	t_list		*head;
 	size_t		bytes_read;
 
-	head = 0;
-	lst = &head;
+	lst = 0;
 	ret = buff;
 	while (*ret && ret - buff < BUFFER_SIZE)
 		ret++;
@@ -32,7 +31,7 @@ char	*get_next_line(int fd)
 	while (bytes_read == BUFFER_SIZE && !find_newline(buff))
 	{
 		head = create_chunk(lst, buff);
-		if (!head)
+		if (!head->next)
 			return (list_clear(lst));
 		bytes_read = read(fd, buff, BUFFER_SIZE);
 	}
