@@ -5,26 +5,17 @@
 /*                                                    +:+                     */
 /*   By: vcoevert <vcoevert@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
-/*   Created: 2026/03/24 14:00:32 by vcoevert     #+#    #+#                  */
-/*   Updated: 2026/03/29 21:19:27 by vcoevert     ########   odam.nl          */
+/*   Created: 2026/03/30 16:15:11 by vcoevert     #+#    #+#                  */
+/*   Updated: 2026/03/31 15:39:05 by vcoevert     ########   odam.nl          */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
-# include <stddef.h>
 # include <stdlib.h>
 
-typedef struct gnl_list
-{
-	char			chunk[BUFFER_SIZE];
-	struct gnl_list	*next;
-}					t_list;
-
 char	*get_next_line(int fd);
-char	*find_newline(char *chunk);
-void	*list_clear(t_list **lst);
-t_list	*create_chunk(t_list **lst, char *chunk);
-void	lists_to_str(t_list *head, t_list *temp, char *buff, char **ret);
-void	clean_buffer(char *buff);
+void	*ft_memchr(const void *s, int ch, size_t n);
+void	*ft_memmove(void *dest, const void *src, size_t n);
+void	*ft_memset(void *s, int c, size_t n);
 #endif

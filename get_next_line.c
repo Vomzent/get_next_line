@@ -5,40 +5,88 @@
 /*                                                    +:+                     */
 /*   By: vcoevert <vcoevert@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
-/*   Created: 2026/03/24 13:49:42 by vcoevert     #+#    #+#                  */
-/*   Updated: 2026/03/30 12:39:52 by vcoevert     ########   odam.nl          */
+/*   Created: 2026/03/30 15:35:05 by vcoevert     #+#    #+#                  */
+/*   Updated: 2026/03/31 15:55:06 by vcoevert     ########   odam.nl          */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <unistd.h>
+#ifndef BUFFER_SIZE
+# define BUFFER_SIZE 42
+#endif
+
+static ssize_t	fill_buff(char *buff, int fd)
+{
+	char	*fillpoint;
+	size_t	in_buff;
+	ssize_t	bytes_read;
+	char	*newline;
+
+	newline = ft_memchr(buff, '\n', BUFFER_SIZE);
+	in_buff = BUFFER_SIZE;
+	if (newline)
+	{
+		in_buff = newline - buff;
+		ft_memmove(buff, newline, BUFFER_SIZE - in_buff);
+		ft_memset(buff + in_buff, '\0', in_buff);
+	}
+	fillpoint = ft_memchr(buff, '\0', BUFFER_SIZE);
+	bytes_read = 0;
+	if (fillpoint)
+	{
+		in_buff = fillpoint - buff;
+		bytes_read = read(fd, fillpoint, BUFFER_SIZE - in_buff);
+	}
+	if (bytes_read == -1)
+		return (-1);
+	in_buff += bytes_read;
+	ft_memset(buff + in_buff, 0, BUFFER_SIZE - in_buff);
+	return (in_buff);
+}
+
+static char	*make_ret(char *str, char *buff)
+{
+	size_t	slen;
+	size_t	blen;
+	char	*bend;
+	char	*ret;
+	
+	slen = 0;
+	bend = ft_memchr(buff, '\n', BUFFER_SIZE);
+	if (!bend)
+		bend = ft_memchr(buff, '\0', BUFFER_SIZE);
+	blen = bend - buff;
+	if (str)
+		while (str[slen])
+			slen++;
+	ret = malloc(slen + blen + 1);
+	if (!ret)
+		return (free(str), (char *)0);
+	if (str)
+	{
+		ft_memmove(ret, str, slen);
+		free(str);
+	}
+	ft_memmove(ret + slen, buff, blen);
+	ft_memset(ret + slen + blen, '\0', 1);
+	return (ret);
+}
 
 char	*get_next_line(int fd)
 {
 	static char	buff[BUFFER_SIZE];
 	char		*ret;
-	t_list		**lst;
-	t_list		*head;
-	ssize_t		bytes_read;
+	ssize_t		buff_bytes;
 
-	head = 0;
-	lst = &head;
-	ret = buff;
-	while (*ret && ret - buff < BUFFER_SIZE)
-		ret++;
-	bytes_read = BUFFER_SIZE;
-	if (ret - buff != BUFFER_SIZE)
-		bytes_read = read(fd, ret, BUFFER_SIZE - (ret - buff)) + ret - buff;
-	while (bytes_read == BUFFER_SIZE && !find_newline(buff))
-	{
-		if (!create_chunk(lst, buff))
-			return (list_clear(lst));
-		if (!(bytes_read = read(fd, buff, BUFFER_SIZE)))
-			clean_buffer(buff);
-	}
+	buff_bytes = fill_buff(buff, fd);
 	ret = 0;
-	lists_to_str(*lst, *lst, buff, &ret);
-	list_clear(lst);
-	clean_buffer(buff);
+	while (!ft_memchr(buff, '\0', BUFFER_SIZE) && !ft_memchr(buff, '\n', BUFFER_SIZE))
+	{
+		ret = make_ret(ret, buff);
+		ft_memset(buff, '\0', BUFFER_SIZE);
+		buff_bytes = fill_buff(buff, fd);
+	}
+	ret = make_ret(ret, buff);
 	return (ret);
 }

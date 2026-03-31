@@ -5,106 +5,62 @@
 /*                                                    +:+                     */
 /*   By: vcoevert <vcoevert@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
-/*   Created: 2026/03/25 11:45:11 by vcoevert     #+#    #+#                  */
-/*   Updated: 2026/03/29 21:23:16 by vcoevert     ########   odam.nl          */
+/*   Created: 2026/03/30 15:48:22 by vcoevert     #+#    #+#                  */
+/*   Updated: 2026/03/31 15:34:15 by vcoevert     ########   odam.nl          */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	*list_clear(t_list **lst)
+void	*ft_memchr(const void *ptr, int ch, size_t count)
 {
-	t_list	*head;
-	t_list	*next;
+	unsigned char	*p;
+	size_t			i;
 
-	head = *lst;
-	while (head)
+	i = 0;
+	p = (unsigned char *)ptr;
+	while (i < count)
 	{
-		next = head->next;
-		free(head);
-		head = next;
-	}
-	*lst = head;
-	return (head);
-}
-
-char	*find_newline(char *chunk)
-{
-	size_t	i;
-
-	i = -1;
-	while (++i < BUFFER_SIZE)
-	{
-		if (chunk[i] == '\n' || chunk[i] == '\0')
-			return (chunk + i + 1);
+		if (p[i] == (unsigned char)ch)
+			return (p + i);
+		i++;
 	}
 	return (0);
 }
 
-void	clean_buffer(char *chunk)
+void	*ft_memset(void *s, int c, size_t n)
 {
-	size_t	i;
-	size_t	j;
+	unsigned char	*ptr;
+	size_t			i;
 
 	i = 0;
-	j = find_newline(chunk) - chunk;
-	if (!find_newline(chunk))
-		j = BUFFER_SIZE;
-	while (j < BUFFER_SIZE)
-		chunk[i++] = chunk[j++];
-	while (i < BUFFER_SIZE)
-		chunk[i++] = '\0';
-}
-
-t_list	*create_chunk(t_list **lst, char *chunk)
-{
-	t_list	*ret;
-	t_list	*head;
-	size_t	i;
-
-	i = -1;
-	ret = malloc(sizeof(t_list));
-	if (!ret)
-		return (ret);
-	ret->next = 0;
-	while (++i < BUFFER_SIZE)
-		ret->chunk[i] = chunk[i];
-	if (!*lst)
+	ptr = s;
+	while (i < n)
 	{
-		*lst = ret;
-		return (ret);
-	}
-	head = *lst;
-	while (head->next)
-		head = head->next;
-	head->next = ret;
-	return (ret);
-}
-
-void	lists_to_str(t_list *head, t_list *temp, char *buff, char **ret)
-{
-	size_t	i;
-	size_t	j;
-
-	i = 0;
-	if (!head && !buff[0])
-		return ;
-	while (head)
-	{
-		head = head->next;
+		ptr[i] = (unsigned char)c;
 		i++;
 	}
-	ret[0] = malloc(sizeof(t_list) * i + (find_newline(buff) - buff) + 1);
-	j = 0;
-	while (temp)
-	{
-		i = 0;
-		while (i < BUFFER_SIZE)
-			ret[0][j++] = temp->chunk[i++];
-		temp = temp->next;
-	}
+	return (s);
+}
+
+void	*ft_memmove(void *dest, const void *src, size_t n)
+{
+	unsigned char		*pdest;
+	const unsigned char	*psrc;
+	size_t				i;
+
+	pdest = dest;
+	psrc = src;
 	i = 0;
-	while (i < (size_t)(find_newline(buff) - buff))
-		ret[0][j++] = buff[i++];
-	ret[0][j] = '\0';
+	if (pdest == psrc)
+		return (dest);
+	while (i < n)
+	{
+		if (src > dest)
+			pdest[i] = psrc[i];
+		else
+			pdest[n - 1 - i] = psrc[n - 1 - i];
+		i++;
+	}
+	return (dest);
 }
