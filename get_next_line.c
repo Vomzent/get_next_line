@@ -6,7 +6,7 @@
 /*   By: vcoevert <vcoevert@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2026/03/30 15:35:05 by vcoevert     #+#    #+#                  */
-/*   Updated: 2026/03/31 17:53:13 by vcoevert     ########   odam.nl          */
+/*   Updated: 2026/03/31 18:10:51 by vcoevert     ########   odam.nl          */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,8 @@ char	*get_next_line(int fd)
 	if (buff_bytes == -1)
 		return (0);
 	ret = 0;
-	while (!ft_memchr(buff, '\0', BUFFER_SIZE)
-		&& !ft_memchr(buff, '\n', BUFFER_SIZE))
+	while (!ft_memchr(buff, '\n', BUFFER_SIZE)
+		&& *buff)
 	{
 		ret = make_ret(ret, buff);
 		ft_memset(buff, '\0', BUFFER_SIZE);
