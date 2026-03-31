@@ -6,7 +6,7 @@
 /*   By: vcoevert <vcoevert@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2026/03/30 15:35:05 by vcoevert     #+#    #+#                  */
-/*   Updated: 2026/03/31 18:10:51 by vcoevert     ########   odam.nl          */
+/*   Updated: 2026/03/31 19:03:29 by vcoevert     ########   odam.nl          */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static ssize_t	fill_buff(char *buff, int fd)
 	{
 		in_buff = fillpoint - buff;
 		ft_memmove(buff, fillpoint + 1, BUFFER_SIZE - in_buff);
-		ft_memset(buff + in_buff, '\0', in_buff);
+		ft_memset(buff + (BUFFER_SIZE - in_buff), '\0', 1);
 	}
 	fillpoint = ft_memchr(buff, '\0', BUFFER_SIZE);
 	bytes_read = 0;
@@ -40,7 +40,7 @@ static ssize_t	fill_buff(char *buff, int fd)
 	if (bytes_read == -1)
 		return (-1);
 	in_buff += bytes_read;
-	ft_memset(buff + in_buff, 0, BUFFER_SIZE - in_buff);
+	ft_memset(buff + in_buff, 0, (BUFFER_SIZE - in_buff > 0));
 	return (in_buff);
 }
 
