@@ -6,7 +6,7 @@
 /*   By: vcoevert <vcoevert@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2026/03/30 15:35:05 by vcoevert     #+#    #+#                  */
-/*   Updated: 2026/03/31 17:12:13 by vcoevert     ########   odam.nl          */
+/*   Updated: 2026/03/31 17:53:13 by vcoevert     ########   odam.nl          */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,8 @@ static char	*make_ret(char *str, char *buff)
 	slen = 0;
 	bend = ft_memchr(buff, '\n', BUFFER_SIZE) + 1;
 	if (bend == (char *)1)
-		bend = ft_memchr(buff, '\0', BUFFER_SIZE);
-	else
-		blen = bend - buff;
+		bend = ft_memchr(buff, '\0', BUFFER_SIZE + 1);
+	blen = bend - buff;
 	if (str)
 		while (str[slen])
 			slen++;
@@ -75,7 +74,7 @@ static char	*make_ret(char *str, char *buff)
 
 char	*get_next_line(int fd)
 {
-	static char	buff[BUFFER_SIZE];
+	static char	buff[BUFFER_SIZE + 1];
 	char		*ret;
 	ssize_t		buff_bytes;
 
@@ -90,8 +89,11 @@ char	*get_next_line(int fd)
 		ft_memset(buff, '\0', BUFFER_SIZE);
 		buff_bytes = fill_buff(buff, fd);
 		if (buff_bytes == -1)
-			return (0);
+			return (free(ret), (char *)0);
 	}
 	ret = make_ret(ret, buff);
+	if (ret)
+		if (!*ret)
+			return (free(ret), (char *)0);
 	return (ret);
 }
