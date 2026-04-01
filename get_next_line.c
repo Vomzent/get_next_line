@@ -6,15 +6,12 @@
 /*   By: vcoevert <vcoevert@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2026/03/30 15:35:05 by vcoevert     #+#    #+#                  */
-/*   Updated: 2026/03/31 20:58:28 by vcoevert     ########   odam.nl          */
+/*   Updated: 2026/04/01 11:12:19 by vcoevert     ########   odam.nl          */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <unistd.h>
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE 42
-#endif
 
 static ssize_t	fill_buff(char *buff, int fd)
 {
@@ -22,15 +19,15 @@ static ssize_t	fill_buff(char *buff, int fd)
 	size_t	in_buff;
 	ssize_t	bytes_read;
 
-	fillpoint = ft_memchr(buff, '\n', BUFFER_SIZE);
+	fillpoint = ft_strchr(buff, '\n');
 	in_buff = BUFFER_SIZE;
 	if (fillpoint)
 	{
 		in_buff = fillpoint - buff;
-		ft_memmove(buff, fillpoint + 1, BUFFER_SIZE - in_buff);
-		ft_memset(buff + (BUFFER_SIZE - in_buff), '\0', in_buff);
+		ft_memcpy(buff, fillpoint + 1, BUFFER_SIZE - in_buff);
+		ft_memset(buff + (BUFFER_SIZE - in_buff), '\0', 1);
 	}
-	fillpoint = ft_memchr(buff, '\0', BUFFER_SIZE);
+	fillpoint = ft_strchr(buff, '\0');
 	bytes_read = 0;
 	if (fillpoint)
 	{
@@ -40,7 +37,7 @@ static ssize_t	fill_buff(char *buff, int fd)
 	if (bytes_read == -1)
 		return (-1);
 	in_buff += bytes_read;
-	ft_memset(buff + in_buff, 0, BUFFER_SIZE - in_buff);
+	ft_memset(buff + in_buff, 0, (BUFFER_SIZE - in_buff > 0));
 	return (in_buff);
 }
 
@@ -52,9 +49,9 @@ static char	*make_ret(char *str, char *buff)
 	char	*ret;
 
 	slen = 0;
-	bend = ft_memchr(buff, '\n', BUFFER_SIZE) + 1;
+	bend = ft_strchr(buff, '\n') + 1;
 	if (bend == (char *)1)
-		bend = ft_memchr(buff, '\0', BUFFER_SIZE + 1);
+		bend = ft_strchr(buff, '\0');
 	blen = bend - buff;
 	if (str)
 		while (str[slen])
@@ -64,10 +61,10 @@ static char	*make_ret(char *str, char *buff)
 		return (free(str), (char *)0);
 	if (str)
 	{
-		ft_memmove(ret, str, slen);
+		ft_memcpy(ret, str, slen);
 		free(str);
 	}
-	ft_memmove(ret + slen, buff, blen);
+	ft_memcpy(ret + slen, buff, blen);
 	ft_memset(ret + slen + blen, '\0', 1);
 	return (ret);
 }
@@ -82,7 +79,7 @@ char	*get_next_line(int fd)
 	if (buff_bytes == -1)
 		return (0);
 	ret = 0;
-	while (!ft_memchr(buff, '\n', BUFFER_SIZE) && *buff)
+	while (!ft_strchr(buff, '\n') && *buff)
 	{
 		ret = make_ret(ret, buff);
 		ft_memset(buff, '\0', BUFFER_SIZE);

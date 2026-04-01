@@ -6,25 +6,25 @@
 /*   By: vcoevert <vcoevert@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2026/03/30 15:48:22 by vcoevert     #+#    #+#                  */
-/*   Updated: 2026/03/31 15:34:15 by vcoevert     ########   odam.nl          */
+/*   Updated: 2026/04/01 10:23:09 by vcoevert     ########   odam.nl          */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	*ft_memchr(const void *ptr, int ch, size_t count)
+char	*ft_strchr(const char *str, int ch)
 {
-	unsigned char	*p;
-	size_t			i;
+	size_t	i;
 
 	i = 0;
-	p = (unsigned char *)ptr;
-	while (i < count)
+	while (str[i])
 	{
-		if (p[i] == (unsigned char)ch)
-			return (p + i);
+		if (str[i] == (char)ch)
+			return ((char *)str + i);
 		i++;
 	}
+	if ((char)ch == '\0')
+		return ((char *)str + i);
 	return (0);
 }
 
@@ -43,7 +43,7 @@ void	*ft_memset(void *s, int c, size_t n)
 	return (s);
 }
 
-void	*ft_memmove(void *dest, const void *src, size_t n)
+void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
 	unsigned char		*pdest;
 	const unsigned char	*psrc;
@@ -51,15 +51,12 @@ void	*ft_memmove(void *dest, const void *src, size_t n)
 
 	pdest = dest;
 	psrc = src;
-	i = 0;
-	if (pdest == psrc)
+	if (psrc == pdest)
 		return (dest);
+	i = 0;
 	while (i < n)
 	{
-		if (src > dest)
-			pdest[i] = psrc[i];
-		else
-			pdest[n - 1 - i] = psrc[n - 1 - i];
+		pdest[i] = psrc[i];
 		i++;
 	}
 	return (dest);
