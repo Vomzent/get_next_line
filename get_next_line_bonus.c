@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                       ::::::::             */
-/*   get_next_line.c                                   :+:    :+:             */
+/*   get_next_line_bonus.c                             :+:    :+:             */
 /*                                                    +:+                     */
 /*   By: vcoevert <vcoevert@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2026/03/30 15:35:05 by vcoevert     #+#    #+#                  */
-/*   Updated: 2026/04/01 12:59:58 by vcoevert     ########   odam.nl          */
+/*   Updated: 2026/04/01 12:48:13 by vcoevert     ########   odam.nl          */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 #include <unistd.h>
 
 static ssize_t	fill_buff(char *buff, int fd)
@@ -71,23 +71,23 @@ static char	*make_ret(char *str, char *buff)
 
 char	*get_next_line(int fd)
 {
-	static char	buff[BUFFER_SIZE + 1];
+	static char	buff[FD_SETSIZE][BUFFER_SIZE + 1];
 	char		*ret;
 	ssize_t		buff_bytes;
 
-	buff_bytes = fill_buff(buff, fd);
+	buff_bytes = fill_buff(buff[fd], fd);
 	if (buff_bytes == -1)
 		return (0);
 	ret = 0;
-	while (!ft_strchr(buff, '\n') && *buff)
+	while (!ft_strchr(buff[fd], '\n') && buff[fd][0])
 	{
-		ret = make_ret(ret, buff);
-		ft_memset(buff, '\0', BUFFER_SIZE);
-		buff_bytes = fill_buff(buff, fd);
+		ret = make_ret(ret, buff[fd]);
+		ft_memset(buff[fd], '\0', BUFFER_SIZE);
+		buff_bytes = fill_buff(buff[fd], fd);
 		if (buff_bytes == -1)
 			return (free(ret), (char *)0);
 	}
-	ret = make_ret(ret, buff);
+	ret = make_ret(ret, buff[fd]);
 	if (ret)
 		if (!*ret)
 			return (free(ret), (char *)0);
