@@ -6,7 +6,7 @@
 /*   By: vcoevert <vcoevert@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2026/03/30 15:35:05 by vcoevert     #+#    #+#                  */
-/*   Updated: 2026/04/01 12:48:13 by vcoevert     ########   odam.nl          */
+/*   Updated: 2026/04/01 16:07:42 by vcoevert     ########   odam.nl          */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,7 @@ char	*get_next_line(int fd)
 		if (buff_bytes == -1)
 			return (free(ret), (char *)0);
 	}
-	ret = make_ret(ret, buff[fd]);
-	if (ret)
-		if (!*ret)
-			return (free(ret), (char *)0);
+	if (ret || *buff[fd])
+		ret = make_ret(ret, buff[fd]);
 	return (ret);
 }
