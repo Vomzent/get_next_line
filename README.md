@@ -25,7 +25,7 @@ https://github.com/Tripouille/gnlTester<br>
 https://www.gutenberg.org/browse/scores/top<br>
 
 # The algorithm explained
-First we define a static buffer array, this array will store the last bytes read from [read(2)]((https://linux.die.net/man/2/read).
-The algorithm first tries to fill the buffer with as many new bytes as possible. It does this by first checking if there's an old leftover string. Deleting it if so. Then filling up all the empty space with a read from buffer.
+First we define a static buffer array, this array will store the last bytes read from [read(2)](https://linux.die.net/man/2/read).
+The algorithm first tries to fill the buffer with as many new bytes as possible. It does this by first checking if there's an old leftover string. Deleting it if so. Then filling up all the empty space within the buffer using [read(2)](https://linux.die.net/man/2/read).
 Once we then have a maximally filled buffer we ask "is there a newline in this buffer or is the buffer empty?" If not that means we haven't gotten to the end of a string yet. We store our not yet finished string in return and read again.
-When we do reach a newline or recieve nothing from read(2) it means our string is finished, we put the end of our finished string in return and give it's memory adress as return value. Checking along the way if the file descriptor is still valid. or if the string we are about to make is empty. Which in case we return a pointer to NULL.
+When we do reach a newline or recieve nothing from [read(2)](https://linux.die.net/man/2/read) it means our string is finished, we put the end of our finished string in return and give it's memory adress as return value. Checking along the way if the file descriptor is still valid or if the string we are about to make is empty. In which case we return a pointer to NULL.
