@@ -6,7 +6,7 @@
 /*   By: vcoevert <vcoevert@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2026/04/12 10:36:09 by vcoevert     #+#    #+#                  */
-/*   Updated: 2026/04/12 15:57:18 by vcoevert     ########   odam.nl          */
+/*   Updated: 2026/04/13 01:45:16 by vcoevert     ########   odam.nl          */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,24 +21,26 @@
 
 static char	*append_chunk(char *str, char *buff)
 {
-	size_t	len;
+	size_t	strlen;
+	size_t	bufflen;
 	char	*ret;
 
-	len = 0;
-	while (buff[len] && buff[len] != '\n')
-		len++;
-	if (buff[len] == '\n')
-		len++;
+	bufflen = 0;
+	strlen = 0;
+	while (buff[bufflen] && buff[bufflen] != '\n')
+		bufflen++;
+	if (buff[bufflen] == '\n')
+		bufflen++;
 	if (str)
-		while (str[len])
-			len++;
-	ret = malloc(len + 1);
+		while (str[strlen])
+			strlen++;
+	ret = malloc(strlen + bufflen + 1);
 	if (ret)
 	{
-		*ret = 0;
+		*ret = '\0';
 		if (str)
-			ft_strlcat(ret, str, len + 1);
-		ft_strlcat(ret, buff, len + 1);
+			ft_strlcat(ret, str, strlen + bufflen + 1);
+		ft_strlcat(ret, buff, strlen + bufflen + 1);
 	}
 	if (str)
 		free(str);
@@ -50,8 +52,9 @@ static void	clean_buffer(char *buff)
 	char	*fillpoint;
 
 	fillpoint = ft_strchr(buff,'\n') + 1;
+	*buff = '\0';
 	if (fillpoint != (char *)1)
-		ft_strncpy(buff, fillpoint, BUFFER_SIZE);
+		ft_strlcat(buff, fillpoint, BUFFER_SIZE);
 	else
 		ft_memset(buff, 0, BUFFER_SIZE);
 }
@@ -95,7 +98,7 @@ int	main(int argc, char **argv)
 	ptr = get_next_line(fd);
 	while (ptr)
 	{
-		printf("%s", ptr);
+		printf("> %s", ptr);
 		free(ptr);
 		ptr = get_next_line(fd);
 	}
