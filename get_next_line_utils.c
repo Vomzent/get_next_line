@@ -6,7 +6,7 @@
 /*   By: vcoevert <vcoevert@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2026/04/12 12:12:04 by vcoevert     #+#    #+#                  */
-/*   Updated: 2026/04/12 12:55:36 by vcoevert     ########   odam.nl          */
+/*   Updated: 2026/04/12 15:14:10 by vcoevert     ########   odam.nl          */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,39 @@ size_t	ft_strlcat(char *dst, const char *src, size_t size)
 	}
 	dst[i + destlen] = '\0';
 	return (srclen + destlen);
+}
+
+size_t	ft_strlcpy(char *dest, const char *src, size_t size)
+{
+	size_t	i;
+	size_t	len;
+
+	i = 0;
+	len = 0;
+	while (src[len])
+		len++;
+	if (!size)
+		return (len);
+	while (src[i] && i < size - 1)
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (len);
+}
+
+char	*ft_strncpy(char *dest, const char *src, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < n && src[i])
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	while (i < n)
+		dest[i++] = '\0';
+	return (dest);
 }

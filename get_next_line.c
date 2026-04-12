@@ -6,7 +6,7 @@
 /*   By: vcoevert <vcoevert@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2026/04/12 10:36:09 by vcoevert     #+#    #+#                  */
-/*   Updated: 2026/04/12 13:12:43 by vcoevert     ########   odam.nl          */
+/*   Updated: 2026/04/12 15:57:18 by vcoevert     ########   odam.nl          */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,17 @@ static char	*append_chunk(char *str, char *buff)
 	return (ret);
 }
 
+static void	clean_buffer(char *buff)
+{
+	char	*fillpoint;
+
+	fillpoint = ft_strchr(buff,'\n') + 1;
+	if (fillpoint != (char *)1)
+		ft_strncpy(buff, fillpoint, BUFFER_SIZE);
+	else
+		ft_memset(buff, 0, BUFFER_SIZE);
+}
+
 char	*get_next_line(int fd)
 {
 	static char	buff[BUFFER_SIZE + 1];
@@ -67,6 +78,7 @@ char	*get_next_line(int fd)
 	}
 	if (*buff)
 		ret = append_chunk(ret, buff);
+	clean_buffer(buff);
 	return (ret);
 }
 
@@ -81,7 +93,12 @@ int	main(int argc, char **argv)
 		return (0);
 	fd = open(argv[1], O_RDONLY);
 	ptr = get_next_line(fd);
-	printf("%s", ptr);
+	while (ptr)
+	{
+		printf("%s", ptr);
+		free(ptr);
+		ptr = get_next_line(fd);
+	}
 	return (0);
 }
 #endif
