@@ -6,18 +6,12 @@
 /*   By: vcoevert <vcoevert@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2026/04/12 10:36:09 by vcoevert     #+#    #+#                  */
-/*   Updated: 2026/04/13 01:45:16 by vcoevert     ########   odam.nl          */
+/*   Updated: 2026/04/13 11:14:15 by vcoevert     ########   odam.nl          */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <unistd.h>
-#if EVAL
-# include <stdio.h>
-# include <sys/types.h>
-# include <sys/stat.h>
-# include <fcntl.h>
-#endif
 
 static char	*append_chunk(char *str, char *buff)
 {
@@ -51,12 +45,10 @@ static void	clean_buffer(char *buff)
 {
 	char	*fillpoint;
 
-	fillpoint = ft_strchr(buff,'\n') + 1;
+	fillpoint = ft_strchr(buff, '\n') + 1;
 	*buff = '\0';
 	if (fillpoint != (char *)1)
 		ft_strlcat(buff, fillpoint, BUFFER_SIZE);
-	else
-		ft_memset(buff, 0, BUFFER_SIZE);
 }
 
 char	*get_next_line(int fd)
@@ -65,8 +57,11 @@ char	*get_next_line(int fd)
 	char		*ret;
 
 	if (!*buff)
+	{
+		ft_memset(buff, 0, BUFFER_SIZE);
 		if (read(fd, buff, BUFFER_SIZE) == -1)
 			return (0);
+	}
 	ret = 0;
 	while (!ft_strchr(buff, '\n') && *buff)
 	{
@@ -84,24 +79,3 @@ char	*get_next_line(int fd)
 	clean_buffer(buff);
 	return (ret);
 }
-
-#if EVAL
-
-int	main(int argc, char **argv)
-{
-	char	*ptr;
-	int		fd;
-
-	if (argc < 2)
-		return (0);
-	fd = open(argv[1], O_RDONLY);
-	ptr = get_next_line(fd);
-	while (ptr)
-	{
-		printf("> %s", ptr);
-		free(ptr);
-		ptr = get_next_line(fd);
-	}
-	return (0);
-}
-#endif

@@ -6,11 +6,17 @@
 /*   By: vcoevert <vcoevert@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2026/04/12 12:12:04 by vcoevert     #+#    #+#                  */
-/*   Updated: 2026/04/13 01:45:40 by vcoevert     ########   odam.nl          */
+/*   Updated: 2026/04/13 11:03:34 by vcoevert     ########   odam.nl          */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#if EVAL
+# include <stdio.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <fcntl.h>
+#endif
 
 void	*ft_memset(void *s, int c, size_t n)
 {
@@ -68,3 +74,24 @@ size_t	ft_strlcat(char *dst, const char *src, size_t size)
 	dst[i + destlen] = '\0';
 	return (srclen + destlen);
 }
+
+#if EVAL
+
+int	main(int argc, char **argv)
+{
+	char	*ptr;
+	int		fd;
+
+	if (argc < 2)
+		return (0);
+	fd = open(argv[1], O_RDONLY);
+	ptr = get_next_line(fd);
+	while (ptr)
+	{
+		printf("%s", ptr);
+		free(ptr);
+		ptr = get_next_line(fd);
+	}
+	return (0);
+}
+#endif
