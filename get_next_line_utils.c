@@ -6,13 +6,13 @@
 /*   By: vcoevert <vcoevert@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2026/04/12 12:12:04 by vcoevert     #+#    #+#                  */
-/*   Updated: 2026/04/13 11:49:47 by vcoevert     ########   odam.nl          */
+/*   Updated: 2026/04/15 20:17:04 by vcoevert     ########   odam.nl          */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	*ft_memset(void *s, int c, size_t n)
+void	*gnl_memset(void *s, int c, size_t n)
 {
 	unsigned char	*ptr;
 	size_t			i;
@@ -27,7 +27,7 @@ void	*ft_memset(void *s, int c, size_t n)
 	return (s);
 }
 
-char	*ft_strchr(const char *str, int ch)
+char	*gnl_strchr(const char *str, int ch)
 {
 	size_t	i;
 
@@ -43,7 +43,7 @@ char	*ft_strchr(const char *str, int ch)
 	return (0);
 }
 
-size_t	ft_strlcat(char *dst, const char *src, size_t size)
+size_t	gnl_strlcat(char *dst, const char *src, size_t size)
 {
 	size_t	srclen;
 	size_t	destlen;

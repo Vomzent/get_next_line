@@ -6,12 +6,15 @@
 /*   By: vcoevert <vcoevert@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2026/04/12 10:36:09 by vcoevert     #+#    #+#                  */
-/*   Updated: 2026/04/13 11:14:15 by vcoevert     ########   odam.nl          */
+/*   Updated: 2026/04/15 21:26:15 by vcoevert     ########   odam.nl          */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <unistd.h>
+#ifndef BUFFER_SIZE
+# define BUFFER_SIZE 500
+#endif
 
 static char	*append_chunk(char *str, char *buff)
 {
@@ -33,8 +36,8 @@ static char	*append_chunk(char *str, char *buff)
 	{
 		*ret = '\0';
 		if (str)
-			ft_strlcat(ret, str, strlen + bufflen + 1);
-		ft_strlcat(ret, buff, strlen + bufflen + 1);
+			gnl_strlcat(ret, str, strlen + bufflen + 1);
+		gnl_strlcat(ret, buff, strlen + bufflen + 1);
 	}
 	if (str)
 		free(str);
@@ -45,10 +48,10 @@ static void	clean_buffer(char *buff)
 {
 	char	*fillpoint;
 
-	fillpoint = ft_strchr(buff, '\n') + 1;
+	fillpoint = gnl_strchr(buff, '\n') + 1;
 	*buff = '\0';
 	if (fillpoint != (char *)1)
-		ft_strlcat(buff, fillpoint, BUFFER_SIZE);
+		gnl_strlcat(buff, fillpoint, BUFFER_SIZE);
 }
 
 char	*get_next_line(int fd)
@@ -58,15 +61,15 @@ char	*get_next_line(int fd)
 
 	if (!*buff)
 	{
-		ft_memset(buff, 0, BUFFER_SIZE);
+		gnl_memset(buff, 0, BUFFER_SIZE);
 		if (read(fd, buff, BUFFER_SIZE) == -1)
 			return (0);
 	}
 	ret = 0;
-	while (!ft_strchr(buff, '\n') && *buff)
+	while (!gnl_strchr(buff, '\n') && *buff)
 	{
 		ret = append_chunk(ret, buff);
-		ft_memset(buff, 0, BUFFER_SIZE);
+		gnl_memset(buff, 0, BUFFER_SIZE);
 		if (read(fd, buff, BUFFER_SIZE) == -1)
 		{
 			if (ret)
